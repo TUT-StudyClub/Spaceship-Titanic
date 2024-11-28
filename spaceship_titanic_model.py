@@ -1,4 +1,7 @@
+
 #プルリク練習
+
+
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -316,4 +319,7 @@ DT_V_pred_test = (predict_DT_V >= 0.5)
 submit['Transported'] = Cat_pred_test[:, 1]
 submit.head()
 
+
 #submit.to_csv("submission.csv", index=False)
+
+
