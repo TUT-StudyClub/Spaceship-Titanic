@@ -99,3 +99,4 @@ stacking_V_grid_predict_test = (stacking_V_grid_predict >= 0.5).astype(bool)
 submit['Transported'] = stacking_V_grid_predict_test
 submit.to_csv("optimized_ensemble.csv", index=False)
 print("Submission file 'optimized_ensemble.csv' created.")
+#プルリク通せ
