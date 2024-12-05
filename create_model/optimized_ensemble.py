@@ -51,24 +51,24 @@ preprocessor = ColumnTransformer(
 rf = RandomForestClassifier(random_state=42)
 lgbm = LGBMClassifier(random_state=42)
 cat = CatBoostClassifier(verbose=0, random_state=42)
-# xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
+xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
 
 # ハイパーパラメータチューニング
 rf_params = {'n_estimators': [100, 200], 'max_depth': [None, 10]}
 lgbm_params = {'learning_rate': [0.1, 0.01], 'n_estimators': [100, 200]}
 cat_params = {'learning_rate': [0.1, 0.01], 'depth': [6, 8]}
-# xgb_params = {'learning_rate': [0.1, 0.01], 'max_depth': [6, 8], 'n_estimators': [100, 200]}
+xgb_params = {'learning_rate': [0.1, 0.01], 'max_depth': [6, 8], 'n_estimators': [100, 200]}
 
 rf_grid = GridSearchCV(rf, rf_params, cv=3, scoring='roc_auc', n_jobs=-1).fit(X_train_V, y_train_V)
 lgbm_grid = GridSearchCV(lgbm, lgbm_params, cv=3, scoring='roc_auc', n_jobs=-1).fit(X_train_V, y_train_V)
 cat_grid = GridSearchCV(cat, cat_params, cv=3, scoring='roc_auc', n_jobs=-1).fit(X_train_V, y_train_V)
-# xgb_grid = GridSearchCV(xgb, xgb_params, cv=3, scoring='roc_auc', n_jobs=-1).fit(X_train_V, y_train_V)
+xgb_grid = GridSearchCV(xgb, xgb_params, cv=3, scoring='roc_auc', n_jobs=-1).fit(X_train_V, y_train_V)
 
 # 最適化モデル
 best_rf = rf_grid.best_estimator_
 best_lgbm = lgbm_grid.best_estimator_
 best_cat = cat_grid.best_estimator_
-# best_xgb = xgb_grid.best_estimator_
+best_xgb = xgb_grid.best_estimator_
 
 # Meta-model
 stacking_model = StackingClassifier(
@@ -76,7 +76,7 @@ stacking_model = StackingClassifier(
         ('rf', best_rf),
         ('lgbm', best_lgbm),
         ('cat', best_cat),
-        # ('xgb', best_xgb)
+        ('xgb', best_xgb)
     ],
     final_estimator=LogisticRegression(max_iter=1000),
     cv=5,
